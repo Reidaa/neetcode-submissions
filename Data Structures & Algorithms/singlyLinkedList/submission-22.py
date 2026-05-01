@@ -1,0 +1,109 @@
+class Node:
+    def __init__(self, value: int, next: Union[Node, None], prev: Union[Node, None]):
+        self.value = value
+        self.next = next
+
+class LinkedList:
+
+    
+    def __init__(self):
+        self._size = 0
+        self._head = None
+        self._tail = None
+        print(self.getValues())
+
+    
+    def get(self, index: int) -> int:
+        print(f">>> get {index} {self.getValues()}")
+        if index >= self._size:
+            return -1
+
+        now = self._head
+        if not now:
+            return -1
+
+        for i in range(0, index):
+            now = now.next
+
+        print(f"<<< get {index} {self.getValues()} -> {now.value}")
+        return now.value
+
+
+    def insertHead(self, val: int) -> None:
+        print(f">>> insertHead {val} {self.getValues()}")
+        new_node = Node(val, None, None)
+        
+        if self._head is None:
+            self._head = new_node
+            self._tail = new_node
+        else:
+            new_node.next = self._head
+            self._head = new_node
+        
+        self._size += 1
+        print(f"<<< insertHead {val} -> {self.getValues()}")
+
+    def insertTail(self, val: int) -> None:
+        print(f">>> insertTail {val} {self.getValues()}")
+        self._size += 1
+        new_node = Node(val, None, None)
+
+        if self._head is None:
+            self._head = new_node
+            self._tail = new_node
+        else:
+            self._tail.next = new_node
+            self._tail = new_node
+
+        print(f"<<< insertTail {val} -> {self.getValues()}")
+
+    def remove(self, index: int) -> bool:
+        print(f">>> remove {index} {self.getValues()}")
+        if index >= self._size:
+            return False
+        self._size -= 1
+
+        if self._size == 0:
+            self._head = None
+            self._tail = None
+            return True
+
+        if index == 0:
+            self._head = self._head.next
+            return True 
+        
+        now = self._head
+        for i in range(0, index-1):
+            now = now.next
+        prev_node = now
+        to_remove = now.next
+            
+        if self._size == index:
+            prev_node.next = None
+            self._tail = prev_node
+        else:
+            nnext_node = to_remove.next
+            prev_node.next = nnext_node
+
+        print(f"<<< remove {index} {self.getValues()}")
+        return True
+
+
+    def getValues(self) -> List[int]:
+        print(f"getValues size: {self._size}")
+        l = [None] * self._size
+        i = 0
+        now = self._head
+
+        if not now:
+            return []
+
+        for i in range(0, self._size ):
+            if now is None:
+                break
+            l[i] = now.value
+            i += 1
+            now = now.next
+
+        return l
+        
