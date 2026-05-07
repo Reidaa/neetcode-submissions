@@ -1,0 +1,40 @@
+class Solution:
+    delimiter = "@"
+
+    def encode(self, strs: List[str]) -> str:
+        encoded = f"{len(strs)}{self.delimiter}"
+
+        for sub in strs:
+            length = len(sub)
+            encoded += f"{length}{self.delimiter}{sub}"
+
+        print(encoded)
+        return encoded
+
+    def decode(self, s: str) -> List[str]:
+        def getNextDelimiterIndex(s: str, start: int, delimiter: str):
+            n = start
+
+            while s[n] != delimiter:
+                n += 1
+
+            return n
+        
+        decoded = []
+        to_cast_to_int = ""
+
+        i = 0
+        to_cast_to_int = s[i:getNextDelimiterIndex(s, i, self.delimiter)]
+        wordNumber = int(to_cast_to_int)
+        i += len(to_cast_to_int) + len(self.delimiter)
+
+        for _ in range(0, wordNumber):
+            to_cast_to_int = s[i:getNextDelimiterIndex(s, i, self.delimiter)]
+            wordLen = int(to_cast_to_int)
+            i += len(to_cast_to_int) + len(self.delimiter)
+            decoded.append(s[i:i+wordLen])
+            i += wordLen
+
+        print(decoded)
+        return decoded
+
